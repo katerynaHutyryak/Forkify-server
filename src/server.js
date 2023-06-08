@@ -1,7 +1,17 @@
 const app = require('./app');
 const dotenv = require('dotenv');
+const mongoose = require('mongoose')
 
-dotenv.config({ path: ".env" });
+dotenv.config({ path: '.env' });
+
+const DB = process.env.DATABASE.replace(
+    '<password>',
+    process.env.PASSWORD
+  );
+
+mongoose.set('strictQuery', false);
+
+mongoose.connect(DB).then(() => console.log('DB connected!'))
 
 
 const PORT = 3000;
