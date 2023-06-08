@@ -26,13 +26,25 @@ const recipeSchema = new Schema({
         type: Number,
         required: [true, 'The cookimg time is required']
     },
-    ingredients : {
-        type: String,
+    ingredients: {
+        type: [
+          {
+            quantity: {
+              type: Number,
+              required: [true, 'Ingredient quantity is required']
+            },
+            unit: String,
+            description: {
+              type: String,
+              required: [true, 'Ingredient description is required']
+            }
+          }
+        ],
         required: [true, 'A recipe must contain ingredients'],
         minlength: [2, 'A recipe must contain at least 2 ingredients'],
         maxlength: [100, 'A recipe can not have more than 100 ingredients']
-    }
-});
+      }
+    });
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 
