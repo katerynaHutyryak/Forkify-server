@@ -1,4 +1,5 @@
 const express = require('express');
+const { requiresAuth } = require('express-openid-connect');
 
 const router = express.Router();
 const recipesController = require('../controllers/recipesController');
@@ -6,6 +7,6 @@ const recipesController = require('../controllers/recipesController');
 router
   .route('/')
   .get(recipesController.getRecipes)
-  .post(recipesController.createRecipe);
+  .post(requiresAuth(), recipesController.createRecipe);
 
 module.exports = router;
