@@ -4,12 +4,11 @@ const recipeSchema = new mongoose.Schema({
   title: {
     type: String,
     required: [true, 'A recipe must have a name'],
-    unique: true,
     minlength: [3, 'A recipe name should have at least 3 characters'],
     maxlength: [30, 'A recipe name should be shorter than 30 characters'],
   },
   slug: String,
-  publisher: {
+  userId: {
     type: String,
     required: true,
   },

@@ -26,16 +26,17 @@ exports.getRecipes = async (req, res) => {
 
 exports.createRecipe = async (req, res) => {
   try {
-    const recipe = await Recipe.create(req.body);
+    const recipe = await Recipe.create({
+      userId: req.oidc.user.sid,
+      ...req.body,
+    });
 
     res.status(201).json({
       status: 'success',
-      data: {
-        data: recipe,
-      },
+      data: recipe,
     });
   } catch (err) {
-    return res.status(400).json({
+    res.status(400).json({
       status: 'error',
       message: err.message,
     });
