@@ -1,16 +1,14 @@
 const Recipe = require('../models/recipeModel');
+const AppError = require('../utils/appError');
 
-exports.getRecipes = async (req, res) => {
+exports.getRecipes = async (req, res, next) => {
   try {
     const recipeName = req.query.search;
     const regex = new RegExp(recipeName, 'i');
     const recipes = await Recipe.find({ title: regex });
 
     if (recipes.length === 0) {
-      return res.status(404).json({
-        status: 'error',
-        message: 'No recipes found',
-      });
+      return next(new AppError('No recipes found', 404));
     }
 
     res.status(200).json({
@@ -24,7 +22,7 @@ exports.getRecipes = async (req, res) => {
   }
 };
 
-exports.createRecipe = async (req, res) => {
+exports.createRecipe = async (req, res, next) => {
   try {
     const recipe = await Recipe.create({
       userId: req.oidc.user.sid,
@@ -43,8 +41,10 @@ exports.createRecipe = async (req, res) => {
   }
 };
 
-exports.getOneRecipe = async (req, res) => {
+exports.getOneRecipe = async (req, res, next) => {
   try {
+    if (!req.params.id) return next(new AppError('No recipe selected', 400));
+
     const recipeID = req.params.id;
     const recipe = await Recipe.findById(recipeID);
 
@@ -62,13 +62,17 @@ exports.getOneRecipe = async (req, res) => {
   }
 };
 
-exports.deleteRecipe = async (req, res) => {
+exports.deleteRecipe = async (req, res, next) => {
   try {
+    if (!req.params.id) return next(new AppError('No recipe selected', 400));
+
     const recipeID = req.params.id;
     const recipe = await Recipe.findById(recipeID);
 
     if (req.oidc.user.sid !== recipe.userId) {
-      throw Error('Unauthorized to delete a recipe of another user');
+      return next(
+        new AppError('Unauthorized to delete a recipe of another user', 401),
+      );
     }
 
     await Recipe.deleteOne(recipe);
