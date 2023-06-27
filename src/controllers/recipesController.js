@@ -42,3 +42,42 @@ exports.createRecipe = async (req, res) => {
     });
   }
 };
+
+exports.getOneRecipe = async (req, res) => {
+  try {
+    const recipeID = req.params.id;
+    const recipe = await Recipe.findById(recipeID);
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: recipe,
+      },
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: 'error',
+      message: 'No recipe found',
+    });
+  }
+};
+
+exports.deleteRecipe = async (req, res) => {
+  try {
+    const recipeID = req.params.id;
+    const recipe = await Recipe.findById(recipeID);
+
+    if (req.oidc.user.sid !== recipe.userId) {
+      throw Error('Unauthorized to delete a recipe of another user');
+    }
+
+    await Recipe.deleteOne(recipe);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Recipe deleted successfully',
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

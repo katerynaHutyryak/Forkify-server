@@ -10,4 +10,9 @@ router
   .get(recipesController.getRecipes)
   .post(requiresAuth(), recipesController.createRecipe);
 
+router
+  .route('/:id')
+  .get(recipesController.getOneRecipe)
+  .delete(requiresAuth(), recipesController.deleteRecipe);
+
 module.exports = router;
