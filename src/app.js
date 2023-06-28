@@ -4,6 +4,7 @@ const { auth } = require('express-openid-connect');
 const dotenv = require('dotenv');
 const { requiresAuth } = require('express-openid-connect');
 const recipesRouter = require('./routers/recipesRouter');
+const AppError = require('./utils/appError');
 
 const app = express();
 
@@ -30,5 +31,9 @@ app.get('/api/v1/profile', requiresAuth(), (req, res) => {
 });
 
 app.use('/api/v1/recipes', recipesRouter);
+
+app.all('*', (req, res, next) =>
+  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404)),
+);
 
 module.exports = app;

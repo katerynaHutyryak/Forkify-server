@@ -5,6 +5,12 @@ const https = require('https');
 const fs = require('fs');
 const app = require('./app');
 
+process.on('uncaughtException', (err) => {
+  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.log(err.name, err.message);
+  process.exit(1);
+});
+
 dotenv.config({ path: '.env' });
 
 const DB = process.env.DATABASE.replace(
@@ -23,6 +29,14 @@ const options = {
 
 const PORT = 3000;
 
-https.createServer(options, app).listen(PORT, () => {
+const server = https.createServer(options, app).listen(PORT, () => {
   console.log(`app is running on port ${PORT}`);
+});
+
+process.on('unhandledRejection', (err) => {
+  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });
