@@ -6,7 +6,7 @@
   "main": "server.js",
   "license": "ISC",
   "engines": {
-    "node": ">=18.16.1"
+    "node": ">=16.20.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
