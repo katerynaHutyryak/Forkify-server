@@ -10,16 +10,22 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon src/server.js"
+    "start": "nodemon src/server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js"
   },
   "dependencies": {
     "dotenv": "^16.3.0",
     "express": "^4.18.2",
+    "express-mongo-sanitize": "^2.2.0",
     "express-openid-connect": "^2.16.0",
+    "express-rate-limit": "^6.7.0",
+    "helmet": "^7.0.0",
+    "hpp": "^0.2.3",
     "https": "^1.0.0",
     "mongoose": "^7.2.2",
     "nodemon": "^2.0.22",
-    "prettier": "^2.8.8"
+    "prettier": "^2.8.8",
+    "xss-clean": "^0.1.4"
   },
   "devDependencies": {
     "eslint": "^8.42.0",
