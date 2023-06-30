@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const express = require('express');
 const { auth } = require('express-openid-connect');
 const dotenv = require('dotenv');
