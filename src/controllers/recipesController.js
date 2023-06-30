@@ -14,9 +14,7 @@ exports.getRecipes = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: {
-        recipes,
-      },
+      recipes,
     },
   });
 });
