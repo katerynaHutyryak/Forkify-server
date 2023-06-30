@@ -8,6 +8,7 @@ const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cors = require('cors');
 
 const recipesRouter = require('./routers/recipesRouter');
 const AppError = require('./utils/appError');
@@ -26,6 +27,7 @@ app.use('/api', limiter);
 
 app.use(mongoSanitize());
 app.use(xss());
+app.use(cors());
 app.use(
   hpp({
     whitelist: ['search'],
