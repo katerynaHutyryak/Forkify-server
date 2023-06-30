@@ -27,7 +27,9 @@ exports.createRecipe = catchAsync(async (req, res, next) => {
 
   res.status(201).json({
     status: 'success',
-    data: recipe,
+    data: {
+      recipe,
+    },
   });
 });
 
@@ -40,7 +42,7 @@ exports.getOneRecipe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: {
-      data: recipe,
+      recipe,
     },
   });
 });
