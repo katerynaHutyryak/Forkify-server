@@ -21,7 +21,6 @@ exports.getRecipes = catchAsync(async (req, res, next) => {
 
 exports.createRecipe = catchAsync(async (req, res, next) => {
   const recipe = await Recipe.create({
-    userId: req.oidc.user.sid,
     ...req.body,
   });
 

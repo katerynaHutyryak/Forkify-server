@@ -8,10 +8,6 @@ const recipeSchema = new mongoose.Schema({
     maxlength: [30, 'A recipe name should be shorter than 30 characters'],
   },
   slug: String,
-  userId: {
-    type: String,
-    required: true,
-  },
   image: String,
   servings: {
     type: Number,
@@ -42,7 +38,7 @@ const recipeSchema = new mongoose.Schema({
   },
   cookingDirections: {
     type: String,
-    required: true,
+    // required: true,
   },
 });
 
