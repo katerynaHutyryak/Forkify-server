@@ -12,7 +12,6 @@ const recipeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  sourceUrl: String,
   image: String,
   servings: {
     type: Number,
@@ -40,6 +39,10 @@ const recipeSchema = new mongoose.Schema({
     required: [true, 'A recipe must contain ingredients'],
     minlength: [2, 'A recipe must contain at least 2 ingredients'],
     maxlength: [100, 'A recipe can not have more than 100 ingredients'],
+  },
+  cookingDirections: {
+    type: String,
+    required: true,
   },
 });
 
