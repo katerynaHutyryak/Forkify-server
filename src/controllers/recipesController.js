@@ -29,7 +29,7 @@ exports.getRecipes = catchAsync(async (req, res, next) => {
 
 exports.createRecipe = catchAsync(async (req, res, next) => {
   const recipe = await Recipe.create({
-    userID: req.oidc.sid,
+    // userID: req.oidc.sid,
     ...req.body,
   });
 
@@ -61,11 +61,11 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
   const recipeID = req.params.id;
   const recipe = await Recipe.findById(recipeID);
 
-  if (req.oidc.user.sid !== recipe.userID) {
-    return next(
-      new AppError('Unauthorized to delete a recipe of another user', 401),
-    );
-  }
+  // if (req.oidc.user.sid !== recipe.userID) {
+  //   return next(
+  //     new AppError('Unauthorized to delete a recipe of another user', 401),
+  //   );
+  // }
 
   await Recipe.deleteOne(recipe);
 

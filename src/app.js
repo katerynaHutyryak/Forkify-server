@@ -1,7 +1,4 @@
 const express = require('express');
-const { auth } = require('express-openid-connect');
-const dotenv = require('dotenv');
-const { requiresAuth } = require('express-openid-connect');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -14,7 +11,8 @@ const AppError = require('./utils/appError');
 
 const app = express();
 
-//SECURITY MIDDLEWARES
+/** SECURITY MIDDLEWARES */
+
 app.use(helmet());
 
 const limiter = rateLimit({
@@ -33,28 +31,9 @@ app.use(
   }),
 );
 
-dotenv.config({ path: '.env' });
-
-//AUTH0 configuration
-const config = {
-  authRequired: false,
-  auth0Logout: true,
-  secret: process.env.AUTH0_CLIENT_SECRET,
-  baseURL: process.env.AUTH0_BASE_URL,
-  clientID: process.env.AUTH0_CLIENT_ID,
-  issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
-};
+/** ROUTES */
 
 app.use(express.json());
-app.use('/api/v1', auth(config));
-
-app.get('/api/v1', (req, res) => {
-  res.send(req.oidc.isAuthenticated() ? 'Logged in' : 'Logged out');
-});
-
-app.get('/api/v1/profile', requiresAuth(), (req, res) => {
-  res.send(JSON.stringify(req.oidc.user));
-});
 
 app.use('/api/v1/recipes', recipesRouter);
 
