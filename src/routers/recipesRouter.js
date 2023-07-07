@@ -8,7 +8,7 @@ const recipesController = require('../controllers/recipesController');
 router
   .route('/')
   .get(recipesController.getRecipes)
-  .post(recipesController.createRecipe);
+  .post(requiresAuth(), recipesController.createRecipe);
 
 router
   .route('/:id')

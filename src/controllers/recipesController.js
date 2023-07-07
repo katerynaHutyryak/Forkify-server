@@ -3,6 +3,14 @@ const AppError = require('../utils/appError');
 const catchAsync = require('../utils/catchAsync');
 
 exports.getRecipes = catchAsync(async (req, res, next) => {
+  if (
+    req.query.search === '' ||
+    req.query.search === null ||
+    req.query.search === undefined ||
+    !req.query.search
+  ) {
+    return next(new AppError('Please, provide a recipe name', 404));
+  }
   const recipeName = req.query.search;
   const regex = new RegExp(recipeName, 'i');
   const recipes = await Recipe.find({ title: regex });
@@ -21,6 +29,7 @@ exports.getRecipes = catchAsync(async (req, res, next) => {
 
 exports.createRecipe = catchAsync(async (req, res, next) => {
   const recipe = await Recipe.create({
+    userID: req.oidc.sid,
     ...req.body,
   });
 
@@ -52,7 +61,7 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
   const recipeID = req.params.id;
   const recipe = await Recipe.findById(recipeID);
 
-  if (req.oidc.user.sid !== recipe.userId) {
+  if (req.oidc.user.sid !== recipe.userID) {
     return next(
       new AppError('Unauthorized to delete a recipe of another user', 401),
     );
