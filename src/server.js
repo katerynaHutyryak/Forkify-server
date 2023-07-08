@@ -18,6 +18,6 @@ dotenv.config({ path: '.env' })
 mongoose.set('strictQuery', false)
 mongoose.connect(process.env.DATABASE).then(() => console.log('DB connected!'))
 
-const PORT = 3000
+const PORT = 8080
 const server = http.createServer(app)
 server.listen(PORT, () => console.log(`app is running on port ${PORT}`))
