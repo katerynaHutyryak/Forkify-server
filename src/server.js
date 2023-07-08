@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const http = require('http');

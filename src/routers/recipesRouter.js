@@ -1,4 +1,3 @@
-/* eslint-disable import/no-extraneous-dependencies */
 const express = require('express');
 const { checkJwt } = require('../utils/checkJwt');
 const recipesController = require('../controllers/recipesController');
