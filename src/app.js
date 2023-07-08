@@ -1,52 +1,52 @@
-const express = require('express');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const mongoSanitize = require('express-mongo-sanitize');
-const xss = require('xss-clean');
-const hpp = require('hpp');
-const cors = require('cors');
+const express = require('express')
+const helmet = require('helmet')
+const rateLimit = require('express-rate-limit')
+const mongoSanitize = require('express-mongo-sanitize')
+const xss = require('xss-clean')
+const hpp = require('hpp')
+const cors = require('cors')
 
-const recipesRouter = require('./routers/recipesRouter');
-const AppError = require('./utils/appError');
+const recipesRouter = require('./routers/recipesRouter')
+const AppError = require('./utils/appError')
 
-const app = express();
+const app = express()
 
 /** SECURITY MIDDLEWARES */
 
-app.use(helmet());
+app.use(helmet())
 
 const limiter = rateLimit({
-  max: 100,
-  windowMs: 60 * 60 * 1000,
-  message: 'Too many requests from this IP, please try again in an hour!',
-});
-app.use('/api', limiter);
+    max: 100,
+    windowMs: 60 * 60 * 1000,
+    message: 'Too many requests from this IP, please try again in an hour!',
+})
+app.use('/api', limiter)
 
-app.use(mongoSanitize());
-app.use(xss());
-app.use(cors());
+app.use(mongoSanitize())
+app.use(xss())
+app.use(cors())
 app.use(
-  hpp({
-    whitelist: ['search'],
-  }),
-);
+    hpp({
+        whitelist: ['search'],
+    })
+)
 
 /** ROUTES */
 
-app.use(express.json());
+app.use(express.json())
 
-app.use('/api/v1/recipes', recipesRouter);
+app.use('/api/v1/recipes', recipesRouter)
 
 app.all('*', (req, res, next) =>
-  next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404)),
-);
+    next(new AppError(`Can't find ${req.originalUrl} on this server!`, 404))
+)
 
 app.use(function (err, req, res, next) {
-  if (err.name === 'UnauthorizedError') {
-    return res.status(401).send({ msg: 'Invalid token' });
-  }
+    if (err.name === 'UnauthorizedError') {
+        return res.status(401).send({ msg: 'Invalid token' })
+    }
 
-  next(err, req, res);
-});
+    next(err, req, res)
+})
 
-module.exports = app;
+module.exports = app

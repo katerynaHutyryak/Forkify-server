@@ -1,17 +1,17 @@
-const express = require('express');
-const { checkJwt } = require('../utils/checkJwt');
-const recipesController = require('../controllers/recipesController');
+const express = require('express')
+const { checkJwt } = require('../utils/checkJwt')
+const recipesController = require('../controllers/recipesController')
 
-const router = express.Router();
-
-router
-  .route('/')
-  .get(recipesController.getRecipes)
-  .post(checkJwt, recipesController.createRecipe);
+const router = express.Router()
 
 router
-  .route('/:id')
-  .get(recipesController.getOneRecipe)
-  .delete(checkJwt, recipesController.deleteRecipe);
+    .route('/')
+    .get(recipesController.getRecipes)
+    .post(checkJwt, recipesController.createRecipe)
 
-module.exports = router;
+router
+    .route('/:id')
+    .get(recipesController.getOneRecipe)
+    .delete(checkJwt, recipesController.deleteRecipe)
+
+module.exports = router
