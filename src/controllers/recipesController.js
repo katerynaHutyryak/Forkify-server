@@ -2,7 +2,6 @@ const Recipe = require('../models/recipeModel')
 const AppError = require('../utils/appError')
 const catchAsync = require('../utils/catchAsync')
 const jwt = require('jsonwebtoken')
-const { decodeJWT } = require('../utils/checkJwt')
 
 exports.getRecipes = catchAsync(async (req, res, next) => {
     if (
