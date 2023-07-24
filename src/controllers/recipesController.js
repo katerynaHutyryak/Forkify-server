@@ -83,3 +83,36 @@ exports.deleteRecipe = catchAsync(async (req, res, next) => {
         message: 'Recipe deleted successfully',
     })
 })
+
+exports.editRecipe = catchAsync(async (req, res, next) => {
+    if (!req.params.id) return next(new AppError('No recipe selected', 400))
+
+    const recipeID = req.params.id
+    const recipe = await Recipe.findById(recipeID)
+
+    const token = req.headers.authorization.slice(7)
+    if (!token) return next(new AppError('Not authorized!', 401))
+    const decoded = await jwt.decode(token)
+
+    if (decoded.sub !== recipe.userID) {
+        return next(
+            new AppError('Unauthorized to delete a recipe of another user', 401)
+        )
+    }
+
+    const doc = await Recipe.findByIdAndUpdate(recipeID, req.body, {
+        new: true,
+        runValidators: true,
+    })
+
+    if (!doc) {
+        return next(new AppError('No document found with that ID', 404))
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            doc,
+        },
+    })
+})

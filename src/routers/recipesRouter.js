@@ -12,6 +12,7 @@ router
 router
     .route('/:id')
     .get(recipesController.getOneRecipe)
+    .patch(checkJwt, recipesController.editRecipe)
     .delete(checkJwt, recipesController.deleteRecipe)
 
 module.exports = router
